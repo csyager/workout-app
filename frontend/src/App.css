@@ -37,6 +37,14 @@
   }
 }
 
+/* Containers */
+.container {
+  width: 80%;
+  padding-top: 20px;
+}
+
+/* Navbar */
+
 a.nav-link {
   color: rgba(0,0,0,.5);
 }
@@ -47,4 +55,15 @@ a.nav-link:hover, a.nav-link:focus {
 
 a.nav-link:active {
   color: rgba(0,0,0,.9);
+}
+
+/* Home page */
+.home-button {
+  height: 25vh;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  margin-bottom: 3vh;
+  font-size: 2rem;
 }
