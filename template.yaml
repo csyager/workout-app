@@ -28,9 +28,55 @@ Resources:
             TableName: !Ref ExercisesTable
       Environment:
         Variables:
-          TABLE_NAME: !Ref ExercisesTable 
+          TABLE_NAME: !Ref ExercisesTable
+  PostExerciseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: post_exercise/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Events:
+        PostExercise:
+          Type: Api
+          Properties:
+            Path: /exercises
+            Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ExercisesTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ExercisesTable
+  PostSetFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: post_set/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Events:
+        PostSet:
+          Type: Api
+          Properties:
+            Path: /set
+            Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SetsTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SetsTable
   ExercisesTable:
     Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: Name
+        Type: String
+  SetsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: Datetime
+        Type: String
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -39,9 +85,21 @@ Outputs:
   ExercisesApi:
     Description: "API Gateway endpoint URL for Prod stage for get_exercises function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/exercises/"
-  HelloWorldFunction:
+  GetExercisesFunction:
     Description: "Get Exercises Lambda Function ARN"
     Value: !GetAtt GetExercisesFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
+  GetExercisesFunctionIamRole:
+    Description: "Implicit IAM Role created for Get Exercises function"
     Value: !GetAtt GetExercisesFunctionRole.Arn
+  PostExerciseFunction:
+    Description: "Post Exercise Lambda Function ARN"
+    Value: !GetAtt PostExerciseFunction.Arn
+  PostExerciseFunctionIamRole:
+    Description: "Implicit IAM Role created for Post Exercise function"
+    Value: !GetAtt PostExerciseFunctionRole.Arn
+  PostSetFunction:
+    Description: "Post Set Lambda Function ARN"
+    Value: !GetAtt PostSetFunction.Arn
+  PostSetFunctionIamRole:
+    Description: "Implicit IAM Role created for Post Set function"
+    Value: !GetAtt PostSetFunctionRole.Arn

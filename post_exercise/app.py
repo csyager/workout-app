@@ -7,13 +7,18 @@ dynamodb = boto3.client("dynamodb")
 
 def lambda_handler(event, context):
 
-    entries = dynamodb.scan(
-        TableName=table_name
+    name = json.loads(event["body"])["name"]
+    
+    response = dynamodb.put_item(
+        TableName=table_name,
+        Item={
+            'Name': { 'S': name }
+        }
     )
 
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "message": entries
+            "response": response
         })
     }
