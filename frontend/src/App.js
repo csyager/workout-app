@@ -7,6 +7,7 @@ import {
 } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Home from "./components/Home"
+import CalendarPage from "./components/Calendar"
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/calendar">
-            {/* <Calendar /> */}
+            <CalendarPage />
           </Route>
           <Route path="/exercises">
             {/* <Exercises /> */}
