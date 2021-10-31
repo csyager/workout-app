@@ -11,6 +11,10 @@ def lambda_handler(event, context):
 
     body = json.loads(event["body"])
 
+    try:
+        date = body["date"]
+    except KeyError:
+        date = str(datetime.date.today())
     exercise_name = body["exercise_name"]
     try:
         set_number = body["set_number"]
@@ -23,13 +27,11 @@ def lambda_handler(event, context):
         reps = body["reps"]
     except KeyError:
         reps = str(0)
-
-    dt = datetime.datetime.now().isoformat()
     
     response = dynamodb.put_item(
         TableName=table_name,
         Item={
-            'SetDate': { 'S': str(datetime.date.today()) },
+            'SetDate': { 'S': date },
             'Exercise-SetNum-Key': { 'S': f"{exercise_name}-{set_number}"},
             'Exercise': { 'S': exercise_name },
             'SetNumber': { 'N': set_number },
@@ -42,6 +44,11 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Headers" : "Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with",
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Methods": "POST"
+        },
         "body": json.dumps({
             "response": response
         })

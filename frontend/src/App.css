@@ -68,6 +68,11 @@ a.nav-link:active {
   font-size: 2rem;
 }
 
+/* Calendar page */
+.set-list-group {
+  text-align: left;
+}
+
 /* react-calendar */
 .react-calendar {
   width: 350px;
