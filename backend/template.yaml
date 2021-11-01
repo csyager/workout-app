@@ -34,6 +34,25 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref ExercisesTable
+  GetExerciseSetsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: get_exercise_sets/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /exercises/{exercise_name}
+            Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SetsTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SetsTable
+          INDEX_NAME: ExerciseNameIndex
   PostExerciseFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -123,12 +142,39 @@ Resources:
           AttributeType: S
         - AttributeName: Exercise-SetNum-Key
           AttributeType: S
+        - AttributeName: Category
+          AttributeType: S
+        - AttributeName: Exercise
+          AttributeType: S
+        - AttributeName: Metric
+          AttributeType: S
+        - AttributeName: MetricAmount
+          AttributeType: N
+        - AttributeName: Reps
+          AttributeType: N
+        - AttributeName: SetNumber
+          AttributeType: N
       KeySchema:
         - AttributeName: SetDate
           KeyType: "HASH"
         - AttributeName: Exercise-SetNum-Key
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
+      GlobalSecondaryIndexes:
+        - IndexName: ExerciseNameIndex
+          KeySchema:
+            - AttributeName: Exercise
+              KeyType: HASH
+            - AttributeName: SetDate
+              KeyType: RANGE
+          Projection:
+            NonKeyAttributes:
+              - Metric
+              - MetricAmount
+              - Reps
+              - SetNumber
+            ProjectionType: INCLUDE
+          
   CategoriesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:

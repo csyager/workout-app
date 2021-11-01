@@ -11,8 +11,12 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons'
 import {
-    Link
+    Link,
+    Switch,
+    Route,
+    useRouteMatch
 } from "react-router-dom"
+import Exercise from './Exercise';
 
 
 function CreateExerciseModal() {
@@ -131,7 +135,7 @@ function CreateExerciseModal() {
     function fetchCategoriesErrorHandler() {
         if (status !== 0 && status !== 200) {
             return {
-                __html: '<Alert variant="danger">Error retrieving categories.  Status code {status}</Alert>'
+                __html: '<div role="alert" class="alert alert-danger">Error retrieving categories.  Status code {status}</div>'
             };
         }
     }
@@ -139,7 +143,7 @@ function CreateExerciseModal() {
     function submitExerciseErrorHandler() {
         if (submitStatus !== 0 && submitStatus !== 200) {
             return {
-                __html: '<Alert variant="danger">Error submitting exercise.  Status code {status}</Alert'
+                __html: '<div role="alert" class="alert alert-danger">Error submitting exercise.  Status code {status}</div>'
             };
         }
     }
@@ -189,6 +193,9 @@ function Exercises() {
         fetchData();
     }, []);
 
+    // routing
+    let match = useRouteMatch();
+
     if (loading) {
         return (
             <Container>
@@ -207,23 +214,30 @@ function Exercises() {
         } else {
             var listGroupElements = []
             for (var i = 0; i < exercises["Exercises"].length; i++) {
-                const target = "/exercises/" + exercises["Exercises"][i]
                 listGroupElements.push(
-                    <ListGroup.Item key={exercises["Exercises"][i]} as={Link} to={target}>
+                    <ListGroup.Item key={exercises["Exercises"][i]} as={Link} to={`${match.url}/${exercises["Exercises"][i]}`}>
                         {exercises["Exercises"][i]}<span className="exercises-list-group-item-float-right"><FontAwesomeIcon icon={faChevronRight} /></span>
                     </ListGroup.Item>
                 )
             }
             return (
-                <Container>
-                    <h1>Exercises</h1>
-                    <ListGroup className="exercises-list-group">
-                        {listGroupElements}
-                    </ListGroup><br />
-                    <div className="float-end">
-                        <CreateExerciseModal />
-                    </div>
-                </Container>
+                <Switch>
+                    <Route path={`${match.path}/:exerciseName`}>
+                        <Exercise />
+                    </Route>
+                    <Route path={match.path}>
+                        <Container>
+                            <h1>Exercises</h1>
+                            <ListGroup className="exercises-list-group">
+                                {listGroupElements}
+                            </ListGroup><br />
+                            <div className="float-end">
+                                <CreateExerciseModal />
+                            </div>
+                        </Container>
+                    </Route>
+                </Switch>
+                
             )
         }
     }
