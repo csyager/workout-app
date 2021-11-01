@@ -49,9 +49,12 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ExercisesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CategoriesTable
       Environment:
         Variables:
           TABLE_NAME: !Ref ExercisesTable
+          CATEGORIES_TABLE_NAME: !Ref CategoriesTable
   PostSetFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -88,6 +91,24 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref SetsTable
+  GetCategoriesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_categories/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Events:
+        GetCategories:
+          Type: Api
+          Properties:
+            Path: /categories
+            Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CategoriesTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref CategoriesTable
   ExercisesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -108,6 +129,12 @@ Resources:
         - AttributeName: Exercise-SetNum-Key
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
+  CategoriesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: Name
+        Type: String
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -140,3 +167,9 @@ Outputs:
   GetSetsFunctionIamRole:
     Description: "Implicit IAM Role created for Get Sets function"
     Value: !GetAtt GetSetsFunctionRole.Arn
+  GetCategoriesFunction:
+    Description: "Get Categories Lambda Function ARN"
+    Value: !GetAtt GetCategoriesFunction.Arn
+  GetCategoriesFunctionIamRole:
+    Description: "Implicit IAM Role created for Get Categories function"
+    Value: !GetAtt GetCategoriesFunctionRole.Arn

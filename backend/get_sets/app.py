@@ -42,8 +42,7 @@ def lambda_handler(event, context):
             "SetNumber": elem["SetNumber"]["N"],
             "Metric": elem["Metric"]["S"],
             "MetricAmount": elem["MetricAmount"]["N"],
-            "Reps": elem["Reps"]["N"],
-            "Category": elem["Category"]["S"]
+            "Reps": elem["Reps"]["N"]
         })
 
     return {

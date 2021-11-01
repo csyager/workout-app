@@ -56,7 +56,7 @@ function DateView(props) {
                     )
                 }
                 items.push(
-                    <Accordion.Item eventKey={exercise_name}>
+                    <Accordion.Item eventKey={exercise_name} key={exercise_name}>
                         <Accordion.Header>{exercise_name}</Accordion.Header>
                         <Accordion.Body>
                             <ListGroup variant="flush" className="set-list-group">

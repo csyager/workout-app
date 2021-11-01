@@ -20,7 +20,6 @@ def lambda_handler(event, context):
         set_number = body["set_number"]
     except KeyError:
         set_number = str(0)
-    category = body["category"]
     metric = body["metric"]
     metric_amount = body["metric_amount"]
     try:
@@ -35,7 +34,6 @@ def lambda_handler(event, context):
             'Exercise-SetNum-Key': { 'S': f"{exercise_name}-{set_number}"},
             'Exercise': { 'S': exercise_name },
             'SetNumber': { 'N': set_number },
-            'Category': { 'S': category },
             'Metric': { 'S': metric },
             'MetricAmount': { 'N': metric_amount },
             'Reps': { 'N': reps }

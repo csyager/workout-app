@@ -8,6 +8,7 @@ import {
 import Navbar from "./components/Navbar"
 import Home from "./components/Home"
 import CalendarPage from "./components/Calendar"
+import Exercises from "./components/Exercises"
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
             <CalendarPage />
           </Route>
           <Route path="/exercises">
-            {/* <Exercises /> */}
+            <Exercises />
           </Route>
           <Route path="/workout">
             {/* <Workout /> */}

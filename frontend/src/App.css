@@ -68,6 +68,15 @@ a.nav-link:active {
   font-size: 2rem;
 }
 
+/* Exercises page */
+.exercises-list-group {
+  text-align: left;
+}
+
+.exercises-list-group-item-float-right {
+  float: right;
+}
+
 /* Calendar page */
 .set-list-group {
   text-align: left;

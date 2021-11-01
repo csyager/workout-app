@@ -10,10 +10,12 @@ function Home() {
     return (
         <Container>
             <Row>
+                {/* eslint-disable-next-line */}
                 <Button variant="primary" as={Col, Link} to="/calendar" className="home-button">Calendar</Button>
             </Row>
             <Row>
-                <Button variant="secondary" as={Col} className="home-button">Exercises</Button>
+                {/* eslint-disable-next-line */}
+                <Button variant="secondary" as={Col, Link} to="/exercises" className="home-button">Exercises</Button>
             </Row>
             <Row>
                 <Button variant="success" as={Col} className="home-button">Workout</Button>
