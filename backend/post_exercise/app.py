@@ -12,6 +12,7 @@ def lambda_handler(event, context):
     try:
         name = body["name"]
         category = body["category"]
+        metric = body["metric"]
     except KeyError:
         return {
             "statusCode": 400,
@@ -46,7 +47,8 @@ def lambda_handler(event, context):
         TableName=table_name,
         Item={
             'Name': { 'S': name },
-            'Category': { 'S': category }
+            'Category': { 'S': category },
+            'Metric': { 'S': metric }
         }
     )
 

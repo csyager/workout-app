@@ -11,6 +11,14 @@ def lambda_handler(event, context):
         TableName=table_name
     )
 
+    exercises = []
+    for exercise in entries["Items"]:
+        exercises.append({
+            "name": exercise["Name"]["S"],
+            "category": exercise["Category"]["S"],
+            "metric": exercise["Metric"]["S"]
+        })
+
     return {
         "statusCode": 200,
         "headers": {
@@ -19,6 +27,6 @@ def lambda_handler(event, context):
             "Access-Control-Allow-Methods": "GET"
         },
         "body": json.dumps({
-            "message": entries
+            "Exercises": exercises
         })
     }

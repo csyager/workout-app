@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar"
 import Home from "./components/Home"
 import CalendarPage from "./components/Calendar"
 import Exercises from "./components/Exercises"
+import Workout from "./components/Workout"
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
             <Exercises />
           </Route>
           <Route path="/workout">
-            {/* <Workout /> */}
+            <Workout />
           </Route>
           <Route path="/">
             <Home />

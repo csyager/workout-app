@@ -67,14 +67,14 @@ function Exercise() {
     console.log(setData);
 
     var tableRows = []
-    for (var i = setData.length-1; i >=0; i--) {
+    for (var j = setData.length-1; j >=0; j--) {
         tableRows.push(
-            <tr key={setData[i]["date"] + '-' + setData[i]["setNumber"]}>
-                <td>{setData[i]["date"]}</td>
-                <td>{setData[i]["setNumber"]}</td>
-                <td>{setData[i]["metricAmount"]}</td>
-                <td>{setData[i]["metric"]}</td>
-                <td>{setData[i]["reps"]}</td>
+            <tr key={setData[j]["date"] + '-' + setData[j]["setNumber"]}>
+                <td>{setData[j]["date"]}</td>
+                <td>{setData[j]["setNumber"]}</td>
+                <td>{setData[j]["metricAmount"]}</td>
+                <td>{setData[j]["metric"]}</td>
+                <td>{setData[j]["reps"]}</td>
             </tr>
         )
     }

@@ -31,6 +31,7 @@ function CreateExerciseModal() {
 
     // form fields
     const [exerciseName, setExerciseName] = useState("");
+    const [exerciseMetric, setExerciseMetric] = useState("");
     const [categoryDropdownValue, setCategoryDropdownValue] = useState("");
     const [newCategoryName, setNewCategoryName] = useState("");
 
@@ -51,7 +52,8 @@ function CreateExerciseModal() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     'name': exerciseName,
-                    'category': categoryName
+                    'category': categoryName,
+                    'metric': exerciseMetric
                 })
             };
             const response = await fetch('https://npkz4z37m3.execute-api.us-east-1.amazonaws.com/Prod/exercises', requestOptions);
@@ -111,23 +113,26 @@ function CreateExerciseModal() {
     } else {
         modalBody = (
             <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Control type="text" placeholder="Exercise name" value={exerciseName} onChange={(e) => setExerciseName(e.target.value)}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Select disabled={newCategory} value={categoryDropdownValue} onChange={(e) => setCategoryDropdownValue(e.target.value)}>
-                            <option value="" disabled>Select a category</option>
-                            {formOptions}
-                        </Form.Select>
-                    </Form.Group>
-                    <Accordion flush>
-                        <CustomAccordionToggle eventKey="0" />
-                        <Accordion.Collapse eventKey="0">
-                            <Form.Group className="mb-3">
-                                <Form.Control type="text" placeholder="New category name" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)}/>
-                            </Form.Group>
-                        </Accordion.Collapse>
-                    </Accordion>
+                <Form.Group className="mb-3">
+                    <Form.Control type="text" placeholder="Exercise name" value={exerciseName} onChange={(e) => setExerciseName(e.target.value)} required/>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control type="text" placeholder="Exercise metric" value={exerciseMetric} onChange={(e) => setExerciseMetric(e.target.value)} required/>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Select disabled={newCategory} value={categoryDropdownValue} onChange={(e) => setCategoryDropdownValue(e.target.value)}>
+                        <option value="" disabled>Select a category</option>
+                        {formOptions}
+                    </Form.Select>
+                </Form.Group>
+                <Accordion flush>
+                    <CustomAccordionToggle eventKey="0" />
+                    <Accordion.Collapse eventKey="0">
+                        <Form.Group className="mb-3">
+                            <Form.Control type="text" placeholder="New category name" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} />
+                        </Form.Group>
+                    </Accordion.Collapse>
+                </Accordion>
             </Form>
         )
     }
@@ -215,8 +220,8 @@ function Exercises() {
             var listGroupElements = []
             for (var i = 0; i < exercises["Exercises"].length; i++) {
                 listGroupElements.push(
-                    <ListGroup.Item key={exercises["Exercises"][i]} as={Link} to={`${match.url}/${exercises["Exercises"][i]}`}>
-                        {exercises["Exercises"][i]}<span className="exercises-list-group-item-float-right"><FontAwesomeIcon icon={faChevronRight} /></span>
+                    <ListGroup.Item key={exercises["Exercises"][i]["name"]} as={Link} to={`${match.url}/${exercises["Exercises"][i]["name"]}`}>
+                        {exercises["Exercises"][i]["name"]}<span className="exercises-list-group-item-float-right"><FontAwesomeIcon icon={faChevronRight} /></span>
                     </ListGroup.Item>
                 )
             }

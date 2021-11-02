@@ -18,7 +18,8 @@ function Home() {
                 <Button variant="secondary" as={Col, Link} to="/exercises" className="home-button">Exercises</Button>
             </Row>
             <Row>
-                <Button variant="success" as={Col} className="home-button">Workout</Button>
+                {/* eslint-disable-next-line */}
+                <Button variant="success" as={Col, Link} to="/workout" className="home-button">Workout</Button>
             </Row>
         </Container>
     )
