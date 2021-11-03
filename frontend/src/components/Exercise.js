@@ -24,6 +24,8 @@ function Exercise() {
     const [sets, setSets] = useState([])
     const [status, setStatus] = useState(0);
     const [limit, setLimit] = useState(10);
+    const [metricName, setMetricName] = useState("");
+    const [isTimeMetric, setIsTimeMetric] = useState(false);
 
     useEffect(() => {
         async function fetchSets() {
@@ -48,7 +50,7 @@ function Exercise() {
         setData.push(
             {
                 "date": set["SetDate"],
-                "metricAmount": parseInt(set["MetricAmount"]),
+                "metricAmount": set["MetricAmount"],
                 "reps": parseInt(set["Reps"]),
                 "metric": set["Metric"],
                 "setNumber": set["SetNumber"]
@@ -64,7 +66,52 @@ function Exercise() {
             return 1;
         }
     });
-    console.log(setData);
+
+    setData.forEach(d => {
+        d["formattedMetricAmount"] = d["metricAmount"];
+        if (metricName === "") { setMetricName(d["metric"]); }
+        if (d["metricAmount"].includes(":")) {
+            if (!isTimeMetric) { setIsTimeMetric(true); }
+            var splitString = d["metricAmount"].split(":");
+            d["metricAmount"] = (parseInt(splitString[0]) * 60 + parseInt(splitString[1])).toString();
+        } else {
+            d["metricAmount"] = parseInt(d["metricAmount"]);
+        }
+    });
+
+    const tickFormatter = (number) => {
+        if (isTimeMetric) {
+            var minutes = Math.floor(number/60);
+            var seconds = number % 60;
+            var minutesString = minutes.toString();
+            var secondsString;
+            if (seconds >= 10) { secondsString = seconds.toString(); }
+            else { secondsString = "0" + seconds.toString(); }
+            return minutesString + ":" + secondsString;
+        } else {
+            return number;
+        }
+    }
+    const tooltipFormatter = (number, name, props) => {
+        if (name === "metricAmount") {
+            return [
+                tickFormatter(number),
+                metricName
+            ]
+        } else {
+            return [
+                number,
+                name
+            ]
+        }
+    }
+    const legendFormatter = (value, entry, index) => {
+        if (value === "metricAmount") {
+            return metricName;
+        } else {
+            return value;
+        }
+    }
 
     var tableRows = []
     for (var j = setData.length-1; j >=0; j--) {
@@ -72,8 +119,7 @@ function Exercise() {
             <tr key={setData[j]["date"] + '-' + setData[j]["setNumber"]}>
                 <td>{setData[j]["date"]}</td>
                 <td>{setData[j]["setNumber"]}</td>
-                <td>{setData[j]["metricAmount"]}</td>
-                <td>{setData[j]["metric"]}</td>
+                <td>{setData[j]["formattedMetricAmount"]}</td>
                 <td>{setData[j]["reps"]}</td>
             </tr>
         )
@@ -98,10 +144,10 @@ function Exercise() {
         <LineChart width={380} height={400} data={setData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" type="category" angle="45" tickMargin="40" height={120} />
-            <YAxis yAxisId="left-axis" type="number" domain={['dataMin', 'dataMax']} />
-            <YAxis yAxisId="right-axis" orientation="right" type="number" dataKey="reps" domain={[0, 'auto']} />
-            <Tooltip />
-            <Legend margin={{ top: 30 }} />
+            <YAxis yAxisId="left-axis" type="number" dataKey="metricAmount" domain={['auto', 'auto']} tickFormatter={tickFormatter} interval={"preserveStartEnd"} />
+            <YAxis yAxisId="right-axis" orientation="right" type="number" dataKey="reps" domain={[0, 'auto']} allowDataOverflow={true} />
+            <Tooltip formatter={tooltipFormatter} />
+            <Legend margin={{ top: 30 }} formatter={legendFormatter} />
             <Line type="monotone" dataKey="metricAmount" stroke="#8884d8" yAxisId="left-axis" dot={{stroke: "#8884d8", strokeWidth: 2}} />
             <Line type="monotone" dataKey="reps" stroke="#82ca9d" yAxisId="right-axis" />
         </LineChart>
@@ -127,8 +173,7 @@ function Exercise() {
                     <tr>
                         <th>Date</th>
                         <th>Set #</th>
-                        <th>Metric Amt.</th>
-                        <th>Metric</th>
+                        <th>{metricName}</th>
                         <th>Reps</th>
                     </tr>
                 </thead>

@@ -142,18 +142,8 @@ Resources:
           AttributeType: S
         - AttributeName: Exercise-SetNum-Key
           AttributeType: S
-        - AttributeName: Category
-          AttributeType: S
         - AttributeName: Exercise
           AttributeType: S
-        - AttributeName: Metric
-          AttributeType: S
-        - AttributeName: MetricAmount
-          AttributeType: N
-        - AttributeName: Reps
-          AttributeType: N
-        - AttributeName: SetNumber
-          AttributeType: N
       KeySchema:
         - AttributeName: SetDate
           KeyType: "HASH"

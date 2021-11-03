@@ -3,7 +3,7 @@ import './App.css';
 import {
   Switch,
   Route,
-  BrowserRouter as Router
+  HashRouter as Router
 } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Home from "./components/Home"

@@ -43,7 +43,7 @@ def lambda_handler(event, context):
             "SetDate": elem["SetDate"]["S"],
             "SetNumber": elem["SetNumber"]["N"],
             "Metric": elem["Metric"]["S"],
-            "MetricAmount": elem["MetricAmount"]["N"],
+            "MetricAmount": elem["MetricAmount"]["S"],
             "Reps": elem["Reps"]["N"]
         }
         sets.append(set_obj)

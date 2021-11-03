@@ -35,7 +35,7 @@ def lambda_handler(event, context):
             'Exercise': { 'S': exercise_name },
             'SetNumber': { 'N': set_number },
             'Metric': { 'S': metric },
-            'MetricAmount': { 'N': metric_amount },
+            'MetricAmount': { 'S': metric_amount },
             'Reps': { 'N': reps }
         }
     )
