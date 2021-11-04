@@ -15,7 +15,8 @@ import {
     YAxis,
     Tooltip,
     Legend,
-    Line
+    Line,
+    ResponsiveContainer
 } from 'recharts';
 
 function Exercise() {
@@ -141,16 +142,18 @@ function Exercise() {
              <ClipLoader loading={loading} />
              <div dangerouslySetInnerHTML={fetchSetsErrorHandler()} />
         </Container>
-        <LineChart width={380} height={400} data={setData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" type="category" angle="45" tickMargin="40" height={120} />
-            <YAxis yAxisId="left-axis" type="number" dataKey="metricAmount" domain={['auto', 'auto']} tickFormatter={tickFormatter} interval={"preserveStartEnd"} />
-            <YAxis yAxisId="right-axis" orientation="right" type="number" dataKey="reps" domain={[0, 'auto']} allowDataOverflow={true} />
-            <Tooltip formatter={tooltipFormatter} />
-            <Legend margin={{ top: 30 }} formatter={legendFormatter} />
-            <Line type="monotone" dataKey="metricAmount" stroke="#8884d8" yAxisId="left-axis" dot={{stroke: "#8884d8", strokeWidth: 2}} />
-            <Line type="monotone" dataKey="reps" stroke="#82ca9d" yAxisId="right-axis" />
-        </LineChart>
+        <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={setData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" type="category" angle="45" tickMargin="40" height={120} />
+                <YAxis yAxisId="left-axis" type="number" dataKey="metricAmount" domain={['auto', 'auto']} tickFormatter={tickFormatter} interval={"preserveStartEnd"} />
+                <YAxis yAxisId="right-axis" orientation="right" type="number" dataKey="reps" domain={[0, 'auto']} allowDataOverflow={true} />
+                <Tooltip formatter={tooltipFormatter} />
+                <Legend margin={{ top: 30 }} formatter={legendFormatter} />
+                <Line type="monotone" dataKey="metricAmount" stroke="#8884d8" yAxisId="left-axis" dot={{stroke: "#8884d8", strokeWidth: 2}} />
+                <Line type="monotone" dataKey="reps" stroke="#82ca9d" yAxisId="right-axis" />
+            </LineChart>
+        </ResponsiveContainer>
         <Container>
             <Row>
                 <Col xs={6}>
