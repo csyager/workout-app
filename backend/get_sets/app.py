@@ -2,6 +2,7 @@ import json
 import os
 import boto3
 import datetime
+from zoneinfo import ZoneInfo
 
 table_name = os.environ['TABLE_NAME']
 dynamodb = boto3.client("dynamodb")
@@ -12,7 +13,7 @@ def lambda_handler(event, context):
     try:
         date = queryStringParams["date"]
     except:
-        date = str(datetime.date.today())
+        date = str(datetime.datetime.now(ZoneInfo("America/New_York")).date())
 
     entries = dynamodb.query(
         TableName=table_name,

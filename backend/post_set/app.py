@@ -3,6 +3,7 @@ import os
 import boto3
 import datetime
 import uuid
+from zoneinfo import ZoneInfo
 
 table_name = os.environ['TABLE_NAME']
 dynamodb = boto3.client("dynamodb")
@@ -14,7 +15,7 @@ def lambda_handler(event, context):
     try:
         date = body["date"]
     except KeyError:
-        date = str(datetime.date.today())
+        date = str(datetime.datetime.now(ZoneInfo("America/New_York")).date())
     exercise_name = body["exercise_name"]
     try:
         set_number = body["set_number"]
